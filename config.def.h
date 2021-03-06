@@ -5,24 +5,25 @@
 #define SCREENSHOTSDIR "/home/jtuzp/Pictures/Screenshots"
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int gappx     = 3;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "FantasqueSansMono Nerd Font Regular:size=9" };
 static const char rofifont[]        = "3270Medium Nerd Font 17";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
+static char normbgcolor[]           = "#222222";
+static char normfgcolor[]           = "#bbbbbb";
+static char normbordercolor[]       = "#444444";
+static char selbgcolor[]            = "#005577";
+static char selfgcolor[]            = "#eeeeee";
+static char selbordercolor[]        = "#79740E";
 static const unsigned int baralpha = 0xd0;
 static const unsigned int borderalpha = OPAQUE;
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+    [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
+    [SchemeSel]  = { selfgcolor,  selbgcolor,  selbordercolor  },
 };
 static const unsigned int alphas[][3]      = {
 	/*               fg      bg        border     */
@@ -76,17 +77,25 @@ static const char *altkeycmd[] = { "setxkbmap", "-rules", "evdev", "-model", "ev
 static const char *screenshot[] = { "flameshot", "gui", "-p", SCREENSHOTSDIR, NULL };
 static const char *fullscreenshot[] = { "flameshot", "full", "-p", SCREENSHOTSDIR, NULL };
 static const char *delayfullscreenshot[] = { "flameshot", "full", "-p", SCREENSHOTSDIR, "-d", "2000", NULL };
+static const char *screensavercmd[] = { "xscreensaver-command", "-l",  NULL };
+static const char *calculatorcmd[] = { "galculator",  NULL };
+static const char *mailspringcmd[] = { "mailspring",  NULL };
+static const char *nemocmd[] = { "nemo",  NULL };
 static const char *termcmd[]  = { TERMINAL, NULL };
+
+#include <X11/XF86keysym.h>
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY|Mod1Mask,              XK_space,  spawn,          {.v = roficmd1 } },
 	{ MODKEY|Mod1Mask,              XK_d,      spawn,          {.v = roficmd2 } },
 	{ MODKEY|Mod1Mask,              XK_k,      spawn,          {.v = altkeycmd } },
+	{ MODKEY|Mod1Mask,              XK_l,      spawn,          {.v = screensavercmd } },
 	{ MODKEY,                       XK_Print,  spawn,          {.v = screenshot } },
 	{ 0,                            XK_Print,  spawn,          {.v = fullscreenshot } },
 	{ Mod1Mask,                     XK_Print,  spawn,          {.v = delayfullscreenshot } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY,			            XK_w,		spawn,		   SHCMD("$BROWSER") },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -96,7 +105,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
 	{ MODKEY|ShiftMask,             XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
+	{ MODKEY,                       XK_q,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
@@ -124,6 +133,14 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ 0, XF86XK_AudioMute,		    spawn,		SHCMD("pactl set-sink-mute @DEFAULT_SINK@ toggle") },
+	{ 0, XF86XK_AudioMicMute,	    spawn,		SHCMD("pactl set-source-mute @DEFAULT_SINK@ toggle") },
+	{ 0, XF86XK_AudioRaiseVolume,	spawn,		SHCMD("pactl set-sink-volume @DEFAULT_SINK@ +10%") },
+	{ 0, XF86XK_AudioLowerVolume,	spawn,		SHCMD("pactl set-sink-volume @DEFAULT_SINK@ -10%") },
+	{ 0, XF86XK_Calculator,		    spawn,      {.v = calculatorcmd } },
+	{ 0, XF86XK_Mail,		        spawn,		{.v = mailspringcmd } },
+	{ 0, XF86XK_WWW,		        spawn,		SHCMD("$BROWSER") },
+	{ 0, XF86XK_Explorer,		    spawn,		{.v = nemocmd } },
 };
 
 /* button definitions */
