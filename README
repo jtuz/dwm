@@ -2,6 +2,10 @@ dwm - dynamic window manager
 ============================
 dwm is an extremely fast, small, and dynamic window manager for X.
 
+Before Start
+------------
+This Fork has all patches to get DWM work with https://github.com/mihirlad55/polybar-dwm-module
+
 
 Requirements
 ------------

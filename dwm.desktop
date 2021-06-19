@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=dwm
+Comment=Dynamic Window Manager
+Exec=/usr/local/bin/dwm
+Icon=dwm
+Terminal=false
+StartupNotify=false
+Type=XSession
+X-LightDM-DesktopName=dwm
+Keywords=tiling;wm;windowmanager;manager;
+Categories=Application;
